@@ -1,5 +1,6 @@
 const { Router } = require("express");
-const { signUpPage, registerUserHandler, loginPage, loginUserHandler } = require("../controllers/auth.controller");
+const { signUpPage, registerUserHandler, loginPage, loginUserHandler, protectMe } = require("../controllers/auth.controller");
+const { protect } = require("../middleware/auth.middleware");
 
 const router = Router();
 
@@ -10,5 +11,7 @@ router.route("/signup")
 router.route("/login")
     .get(loginPage)
     .post(loginUserHandler);
+
+router.route("/protected-test").get(protect, protectMe);
     
 module.exports = router;
