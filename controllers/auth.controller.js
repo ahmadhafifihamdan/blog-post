@@ -1,9 +1,13 @@
 const asyncHandler = require("express-async-handler");
 const { auth } = require("../config/firebase");
-const { createUserWithEmailAndPassword } = require("firebase/auth");
+const { createUserWithEmailAndPassword, signInWithEmailAndPassword } = require("firebase/auth");
 
 const signUpPage = (req, res) => {
     res.render("auth/signup");
+}
+
+const loginPage = (req, res) => {
+    res.render("auth/login");
 }
 
 const registerUserHandler = asyncHandler(async (req, res) => {
@@ -38,8 +42,40 @@ const registerUserHandler = asyncHandler(async (req, res) => {
     }
 });
 
+const loginUserHandler = asyncHandler(async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+        return res.status(400).json({
+            message: "Email and password are mandatory"
+        });
+    }
+
+    try {
+        await signInWithEmailAndPassword(auth, email, password);
+        return res.status(200).json({
+            message: "User has logged in."
+        });
+    } catch (error) {
+        if (
+            error.code === "auth/invalid-credential" ||
+            error.code === "auth/invalid-email"
+        ) {
+            return res.status(400).json({
+                message: error.message
+            });
+        }
+
+        // Anything else → server error
+        return res.status(500).json({
+            message: "Something went wrong. Please try again later."
+        });
+    }
+});
 
 module.exports = { 
     signUpPage, 
-    registerUserHandler
+    registerUserHandler,
+    loginPage,
+    loginUserHandler
 };
