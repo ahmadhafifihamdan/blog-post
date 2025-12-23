@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler");
 const { auth } = require("../config/firebase");
 const { createUserWithEmailAndPassword, signInWithEmailAndPassword } = require("firebase/auth");
+const jwt = require("jsonwebtoken");
+const { JWT_AUTH_TOKEN } = require("../config/env.config");
 
 const signUpPage = (req, res) => {
     res.render("auth/signup");
@@ -50,12 +52,17 @@ const loginUserHandler = asyncHandler(async (req, res) => {
             message: "Email and password are mandatory"
         });
     }
-
+    
+    if (!JWT_AUTH_TOKEN) {
+        res.status(500);
+        throw new Error("JWT_AUTH_TOKEN is missing in env");
+    }
+    
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        return res.status(200).json({
-            message: "User has logged in."
-        });
+        const authentication_token = jwt.sign({ email }, JWT_AUTH_TOKEN, { expiresIn: "30m" });
+        res.cookie("authentication_token", authentication_token, { httpOnly: true });
+        return res.status(200).json({ message: "User has logged in" });
     } catch (error) {
         if (
             error.code === "auth/invalid-credential" ||
