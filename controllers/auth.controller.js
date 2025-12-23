@@ -12,6 +12,10 @@ const loginPage = (req, res) => {
     res.render("auth/login");
 }
 
+const protectMe = (req, res) => {
+    res.json({ user: req.user })
+}
+
 const registerUserHandler = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -84,5 +88,6 @@ module.exports = {
     signUpPage, 
     registerUserHandler,
     loginPage,
-    loginUserHandler
+    loginUserHandler,
+    protectMe
 };
