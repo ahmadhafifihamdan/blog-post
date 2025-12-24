@@ -4,6 +4,6 @@ const { mainPage } = require("../controllers/main.controller");
 
 const router = Router();
 
-router.route("/").get(protect, mainPage);
+router.route("/main").get(protect, mainPage);
 
 module.exports = router;
