@@ -5,15 +5,21 @@ const jwt = require("jsonwebtoken");
 const { JWT_AUTH_TOKEN } = require("../config/env.config");
 
 const signUpPage = (req, res) => {
+    if (req.cookies.authentication_token) {
+        return res.redirect("/main");
+    }
     res.render("auth/signup");
 }
 
 const loginPage = (req, res) => {
+    if (req.cookies.authentication_token) {
+        return res.redirect("/main");
+    }
     res.render("auth/login");
 }
 
-const protectMe = (req, res) => {
-    res.json({ user: req.user })
+const mainPage = (req, res) => {
+    res.render("main")
 }
 
 const registerUserHandler = asyncHandler(async (req, res) => {
@@ -66,7 +72,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
         await signInWithEmailAndPassword(auth, email, password);
         const authentication_token = jwt.sign({ email }, JWT_AUTH_TOKEN, { expiresIn: "30m" });
         res.cookie("authentication_token", authentication_token, { httpOnly: true });
-        return res.status(200).json({ message: "User has logged in" });
+        return res.redirect("/main");
     } catch (error) {
         if (
             error.code === "auth/invalid-credential" ||
@@ -89,5 +95,5 @@ module.exports = {
     registerUserHandler,
     loginPage,
     loginUserHandler,
-    protectMe
+    mainPage
 };

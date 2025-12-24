@@ -5,7 +5,8 @@ const protect =  async (req, res, next) => {
     try {
         const token = req.cookies.authentication_token;
         if (!token) {
-            return res.status(401).json({message: "Not authorized"});
+            // redirect to login if no token
+            return res.redirect("/login");
         }
         
         // verify token
@@ -15,7 +16,8 @@ const protect =  async (req, res, next) => {
         req.user = decoded;
         next();
     } catch (err) {
-        return res.status(401).json({ message: "Not authorized, token failed." });
+        // redirect to login if failed to verify token
+        return res.redirect("/login");
     }
 }
 
