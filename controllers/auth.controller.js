@@ -18,10 +18,6 @@ const loginPage = (req, res) => {
     res.render("auth/login");
 }
 
-const mainPage = (req, res) => {
-    res.render("main")
-}
-
 const registerUserHandler = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
@@ -100,6 +96,5 @@ module.exports = {
     registerUserHandler,
     loginPage,
     loginUserHandler,
-    mainPage,
     logoutHandler
 };
