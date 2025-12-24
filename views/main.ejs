@@ -1,14 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Main</title>
 </head>
 <body>
-    <div>MAIN PAGE</div>
-    <form method="POST" action="/logout">
-        <button type="submit">Logout</button>
-    </form>
+    <h1>Main Page</h1>
+    <% if (blog) { %>
+        <article>
+            <h2>
+                <%= blog.title %>
+            </h2>
+            <p>
+                <small>
+                    By <%= blog.authorEmail %>
+                </small>
+            </p>
+            <p>
+                <%= blog.content %>
+            </p>
+            <p>
+                Likes: <%= blog.likeCount %>
+            </p>
+        </article>
+        <% } else { %>
+            <p>No blog posts available.</p>
+            <% } %>
+                <hr />
+                <form method="POST" action="/logout">
+                    <button type="submit">Logout</button>
+                </form>
 </body>
 </html>
