@@ -88,6 +88,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
 
 const logoutHandler = (req, res) => {
     res.clearCookie("authentication_token");
+    res.clearCookie("current_blog_id");
     return res.redirect("/login");
 }
 

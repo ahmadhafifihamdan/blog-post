@@ -25,9 +25,7 @@ const getBlogById = async (blogId) => {
 
 const getNextBlog = async (blogId) =>{
     const currentBlog = await getBlogById(blogId);
-    if (!currentBlog) {
-        return null;
-    }
+    if (!currentBlog) return null;
     const docRef = collection(db, "blogs");
     const q = query(docRef, orderBy("createdAt", "desc"), startAfter(currentBlog.createdAt), limit(1));
     const snapshot = await getDocs(q);

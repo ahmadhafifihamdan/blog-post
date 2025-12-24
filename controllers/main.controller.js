@@ -18,6 +18,10 @@ const nextBlog = async(req, res) => {
     let blog;
     
     blog = await getNextBlog(req.cookies.current_blog_id); 
+    if (!blog) {
+        blog = await getLatestBlog();
+    }
+
     if (blog) {
         res.cookie("current_blog_id", blog.id)
     }
