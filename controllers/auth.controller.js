@@ -90,10 +90,16 @@ const loginUserHandler = asyncHandler(async (req, res) => {
     }
 });
 
+const logoutHandler = (req, res) => {
+    res.clearCookie("authentication_token");
+    return res.redirect("/login");
+}
+
 module.exports = { 
     signUpPage, 
     registerUserHandler,
     loginPage,
     loginUserHandler,
-    mainPage
+    mainPage,
+    logoutHandler
 };
