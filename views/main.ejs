@@ -24,15 +24,25 @@
                 Likes: <%= blog.likeCount %>
             </p>
         </article>
-        <% } else { %>
-            <p>No blog posts available.</p>
-            <% } %>
-                <hr />
-                <form method="POST" action="/next">
-                    <button type="submit">Next</button>
-                </form>
-                <form method="POST" action="/logout">
-                    <button type="submit">Logout</button>
-                </form>
+        <hr />
+        <h3>Comment</h3>
+        <form method="POST" action="/comment">
+            <input type="hidden" name="blogId" value="<%= blog.id %>" />
+        
+            <textarea name="commentText" rows="3" required></textarea>
+            <br />
+            <button type="submit">Post Comment</button>
+        </form>
+
+    <% } else { %>
+        <p>No blog posts available.</p>
+    <% } %>
+        <hr />
+        <form method="POST" action="/next">
+            <button type="submit">Next</button>
+        </form>
+        <form method="POST" action="/logout">
+            <button type="submit">Logout</button>
+        </form>
 </body>
 </html>
