@@ -1,6 +1,19 @@
 const { db } = require("../config/firebase");
 const { collection, query, orderBy, limit, getDocs, doc, getDoc, startAfter } = require("firebase/firestore");
 
+// Helper function to normalize blog
+function normalizeBlog(DocumentSnapshot) {
+    const data = DocumentSnapshot.data();
+
+    return {
+        id: DocumentSnapshot.id,
+        ...data,
+        likeCount: typeof data.likeCount === "number" ? data.likeCount : 0,
+        commentIds: Array.isArray(data.commentIds) ? data.commentIds : [],
+        imageUrl: typeof data.imageUrl === "string" ? data.imageUrl : "",
+    };
+}
+
 const getLatestBlog = async () => {
     const docRef = collection(db, "blogs");
     const q = query(docRef, orderBy("createdAt", "desc"), limit(1));
@@ -9,20 +22,19 @@ const getLatestBlog = async () => {
     if(snapshot.empty) return null;
 
     const docSnap = snapshot.docs[0];
-    return { id: docSnap.id, ...docSnap.data() };
+    
+    return normalizeBlog(docSnap);    
 };
 
 const getBlogById = async (blogId) => {
     const docRef = doc(db, "blogs", blogId);
     const snapshot = await getDoc(docRef);
 
-    if (snapshot.exists()) {
-        return { id: snapshot.id, ...snapshot.data()};
-    } else {
-        return null;
-    }
-}
-
+    if (!snapshot.exists()) return null;
+    
+    return normalizeBlog(snapshot);
+};
+    
 const getNextBlog = async (blogId) =>{
     const currentBlog = await getBlogById(blogId);
     if (!currentBlog) return null;
@@ -33,7 +45,8 @@ const getNextBlog = async (blogId) =>{
     if(snapshot.empty) return null;
 
     const docSnap = snapshot.docs[0];
-    return { id: docSnap.id, ...docSnap.data() };
+
+    return normalizeBlog(docSnap);
 }
 
 module.exports = {
