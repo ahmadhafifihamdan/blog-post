@@ -3,18 +3,13 @@ const { auth } = require("../config/firebase");
 const { createUserWithEmailAndPassword, signInWithEmailAndPassword } = require("firebase/auth");
 const jwt = require("jsonwebtoken");
 const { JWT_AUTH_TOKEN } = require("../config/env.config");
+const { clearAuthCookies } = require("../middleware/auth.middleware");
 
 const signUpPage = (req, res) => {
-    if (req.cookies.authentication_token) {
-        return res.redirect("/main");
-    }
     res.render("auth/signup");
 }
 
 const loginPage = (req, res) => {
-    if (req.cookies.authentication_token) {
-        return res.redirect("/main");
-    }
     res.render("auth/login");
 }
 
@@ -87,8 +82,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
 });
 
 const logoutHandler = (req, res) => {
-    res.clearCookie("authentication_token");
-    res.clearCookie("current_blog_id");
+    clearAuthCookies(res);
     return res.redirect("/login");
 }
 

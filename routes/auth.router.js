@@ -1,17 +1,17 @@
 const { Router } = require("express");
 const { signUpPage, registerUserHandler, loginPage, loginUserHandler, logoutHandler } = require("../controllers/auth.controller");
-const { protect } = require("../middleware/auth.middleware");
+const { redirectIfAuthenticated } = require("../middleware/auth.middleware");
 
 const router = Router();
 
 router.route("/signup")
-    .get(signUpPage)
+    .get(redirectIfAuthenticated, signUpPage)
     .post(registerUserHandler);
 
 router.route("/login")
-    .get(loginPage)
+    .get(redirectIfAuthenticated, loginPage)
     .post(loginUserHandler);
 
-router.route("/logout").post(protect, logoutHandler);
+router.route("/logout").post(logoutHandler);
     
 module.exports = router;
