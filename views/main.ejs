@@ -26,6 +26,21 @@
         </article>
         <hr />
         <h3>Comment</h3>
+        <% if (comments.length > 0) { %>
+            <ul>
+                <% for(var i=0; i < comments.length; i++) { %>
+                    <li>
+                        <%= comments[i].commentText %>
+                        <small>
+                            by <%= comments[i].userEmail %> at <%= comments[i].createdAtText %>
+                        </small>
+                    </li>
+                <% } %>
+            
+            </ul>
+            <% } else { %>
+                <p>No comments yet.</p>
+            <% } %>
         <form method="POST" action="/comment">
             <input type="hidden" name="blogId" value="<%= blog.id %>" />
         
