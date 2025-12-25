@@ -1,7 +1,8 @@
 const { getLatestBlog, getBlogById, getNextBlog } = require("../services/blog.service");
+const { getCommentsByIds } = require("../services/comment.service");
 
 const mainPage = async(req, res) => {    
-    let blog;
+    let blog, comments, commentIds = [];
 
     if (req.cookies.current_blog_id) {
         blog = await getBlogById(req.cookies.current_blog_id);
@@ -11,7 +12,14 @@ const mainPage = async(req, res) => {
             res.cookie("current_blog_id", blog.id)
         }
     }
-    res.render("main", { blog });
+    
+    if (blog.commentIds) {
+        commentIds = blog.commentIds;
+    }
+
+    comments = await getCommentsByIds(commentIds);
+
+    res.render("main", { blog, comments });
 }
 
 const nextBlog = async(req, res) => {
