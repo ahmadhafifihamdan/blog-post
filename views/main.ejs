@@ -40,7 +40,11 @@
             </ul>
             <% } else { %>
                 <p>No comments yet.</p>
-            <% } %>
+            <% } %>        
+        <form method="POST" action="/like">
+            <input type="hidden" name="blogId" value="<%= blog.id %>" />
+            <button type="submit">Like</button>
+        </form>
         <form method="POST" action="/comment">
             <input type="hidden" name="blogId" value="<%= blog.id %>" />
         
