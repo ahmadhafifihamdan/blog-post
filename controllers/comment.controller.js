@@ -1,7 +1,9 @@
 const { createCommentAndAttachToBlog } = require("../services/comment.service");
 
-const addComment = async(req, res) => {
-    const { blogId, commentText } = req.body;
+const addCommentHandler = async(req, res) => {
+    const { commentText } = req.body;
+    const { blogId } = req.params;
+
     if (!blogId || !commentText || !commentText.trim()) {
         return res.status(400).json({ message: "Comment must not be empty" });
     }
@@ -10,9 +12,9 @@ const addComment = async(req, res) => {
 
     await createCommentAndAttachToBlog(blogId, commentText, userEmail);
 
-    return res.redirect("/main");
+    return res.redirect("/blogs");
 }
 
 module.exports = {
-    addComment
+    addCommentHandler
 }
