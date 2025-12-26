@@ -5,7 +5,7 @@ const addCommentHandler = async(req, res) => {
     const { blogId } = req.params;
 
     if (!blogId || !commentText || !commentText.trim()) {
-        return res.status(400).json({ message: "Comment must not be empty" });
+        return res.redirect("/blogs?error=comment_empty");
     }
 
     const userEmail = req.user.email;

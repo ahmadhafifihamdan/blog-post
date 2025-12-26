@@ -92,6 +92,25 @@
             color: #007bff;
             text-decoration: none;
         }
+        
+        .alert {
+          border-radius: 10px;
+          padding: 10px 12px;
+          font-size: 14px;
+          margin-bottom: 12px;
+        }
+
+        .alert-success {
+          background: #e6fffa;
+          border: 1px solid #b2f5ea;
+          color: #065f46;
+        }
+
+        .alert-error {
+          background: #fdecec;
+          border: 1px solid #f5c2c7;
+          color: #842029;
+        }
     </style>
 </head>
 
@@ -99,11 +118,20 @@
     <div class="auth-card">
         <h1>Welcome Back</h1>
         <p>Log in to continue</p>
-
+        <% if (typeof success !=="undefined" && success) { %>
+            <div class="alert alert-success">
+                <%= success %>
+            </div>
+        <% } %>
+        <% if (error) { %>
+            <div class="alert alert-error">
+                <%= error %>
+            </div>
+        <% } %>
         <form action="/auth/login" method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input id="email" type="email" name="email" required />
+                <input type="email" name="email" required value="<%= email || '' %>" />
             </div>
 
             <div class="form-group">

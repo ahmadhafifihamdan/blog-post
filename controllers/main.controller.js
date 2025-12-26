@@ -19,7 +19,13 @@ const mainPage = async(req, res) => {
 
     comments = await getCommentsByIds(commentIds);
 
-    res.render("blogs", { blog, comments });
+    const error = req.query.error === "comment_empty" ? "Comment must not be empty.": "";
+    
+    res.render("blogs", {
+        blog,
+        comments,
+        error
+    });
 }
 
 const nextBlog = async(req, res) => {

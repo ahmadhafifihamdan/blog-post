@@ -2,28 +2,39 @@ const { createNewBlog } = require("../services/blog.service");
 const { uploadBlogImageToStorage } = require("../services/storage.service");
 
 const getBlogForm = (req, res) => {
-    return res.render("blog-creation");
+    return res.render("blog-creation", { error: "", title: "", content: "", imageHeader: "" });
 }
 
 const createBlogHandler = async (req, res) => {
     let imageUrl = '';
     let newBlogId = '';
 
+    const body = req.body || {};
+    const title = body.title || "";
+    const content = body.content || "";
+    const imageHeader = body.imageHeader || "";
+
+    if (req.uploadError) {
+        return res.status(req.uploadError.status).render("blog-creation", {
+            error: req.uploadError.message,
+            title,
+            content,
+            imageHeader,
+        });
+    }
+
     if (req.file) {
         try {
             const result = await uploadBlogImageToStorage(req.file);
             imageUrl = result.imageUrl;
         } catch (err) {
-            return res.status(500).json({ message: "Image upload failed" });
+            return res.status(500).render("blog-creation", { error: "Image upload fail. Please try again.", title, content, imageHeader })
         }
     }
 
     if (!String(req.body.title || "").trim() || !String(req.body.content || "").trim()) {
-        return res.status(400).json({ message: "Blog title and content are mandatory" });
+        return res.status(400).render("blog-creation", { error: "Blog title and content are mandatory.", title, content, imageHeader })
     }
-
-
-    const { title, content, imageHeader } = req.body;
 
     try {
         newBlogId = await createNewBlog(
@@ -37,7 +48,8 @@ const createBlogHandler = async (req, res) => {
             },
             imageUrl);
     } catch (err) {
-        return res.status(500).json({ message: "Blog creation fail. Try again." });
+        return res.status(500).render("blog-creation", { error: "Blog creation failed. Please try again.", title, content, imageHeader })
+
     }
 
     return res.cookie("current_blog_id", newBlogId).redirect("/blogs");
