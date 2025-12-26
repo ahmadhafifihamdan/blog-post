@@ -57,7 +57,10 @@ const loginUserHandler = asyncHandler(async (req, res) => {
     }
     
     if (!JWT_AUTH_TOKEN) {
-        return res.status(500).render("auth/login", { error: "Service unavailable. Please contact admin."});
+        console.error("JWT_AUTH_TOKEN missing");
+        return res.status(500).render("auth/login", {
+            error: "Service temporarily unavailable. Please try again later."
+        });
     }
     
     try {
