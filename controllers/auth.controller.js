@@ -10,37 +10,41 @@ const signUpPage = (req, res) => {
 }
 
 const loginPage = (req, res) => {
-    res.render("auth/login");
+    const success = req.query.registered === "1" ? "Registration successful. Please log in." : "";
+    
+    res.render("auth/login", {
+        error: "",
+        success,
+        email: ""
+    });
 }
 
 const registerUserHandler = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({
-            message: "Email and password are mandatory"
-        });
+        return res.status(400).render("auth/signup", { error: "Email and password are required.", email });
     }
 
     try {
         await createUserWithEmailAndPassword(auth, email, password);
-        return res.status(201).json({
-            message: "User registered"
-        });
+
+        return res.redirect("/auth/login?registered=1");
+
     } catch (error) {
-        // Firebase-known errors → client error
-        if (
-            error.code === "auth/email-already-in-use" ||
-            error.code === "auth/invalid-email"
-        ) {
-            return res.status(400).json({
-                message: error.message
+        // Any auth-related failure
+        if (error.code && error.code.startsWith("auth/")) {
+            return res.status(400).render("auth/login", {
+                error: "Invalid email or password.",
+                email
             });
         }
 
-        // Anything else → server error
-        return res.status(500).json({
-            message: "Something went wrong. Please try again later."
+        // Unexpected error
+        console.error("Login error:", error);
+        return res.status(500).render("auth/login", {
+            error: "Something went wrong. Please try again.",
+            email
         });
     }
 });
@@ -49,36 +53,42 @@ const loginUserHandler = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({
-            message: "Email and password are mandatory"
-        });
+        return res.status(400).render("auth/login", { error: "Email and password are required.", email });
     }
     
     if (!JWT_AUTH_TOKEN) {
-        res.status(500);
-        throw new Error("JWT_AUTH_TOKEN is missing in env");
+        return res.status(500).render("auth/login", { error: "Service unavailable. Please contact admin."});
     }
     
     try {
         await signInWithEmailAndPassword(auth, email, password);
-        const authentication_token = jwt.sign({ email }, JWT_AUTH_TOKEN, { expiresIn: "30m" });
+
+        const authentication_token = jwt.sign(
+            { email },
+            JWT_AUTH_TOKEN,
+            { expiresIn: "30m" }
+        );
+
         res.cookie("authentication_token", authentication_token, { httpOnly: true });
         return res.redirect("/blogs");
+
     } catch (error) {
-        if (
-            error.code === "auth/invalid-credential" ||
-            error.code === "auth/invalid-email"
-        ) {
-            return res.status(400).json({
-                message: error.message
+        // Any auth-related failure
+        if (error.code && error.code.startsWith("auth/")) {
+            return res.status(400).render("auth/login", {
+                error: "Invalid email or password.",
+                email
             });
         }
 
-        // Anything else → server error
-        return res.status(500).json({
-            message: "Something went wrong. Please try again later."
+        // Unexpected error
+        console.error("Login error:", error);
+        return res.status(500).render("auth/login", {
+            error: "Something went wrong. Please try again.",
+            email
         });
     }
+
 });
 
 const logoutHandler = (req, res) => {

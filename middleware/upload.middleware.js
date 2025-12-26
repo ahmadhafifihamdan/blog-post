@@ -31,23 +31,28 @@ const uploadBlogImage = (req, res, next) => {
 
     // check error if upload larger than file size
     if (err.code === "LIMIT_FILE_SIZE") {
-      return res.status(413).json({
-        message: `File too large. Max size is 2MB.`,
-      });
+      req.uploadError = {
+        status: 413,
+        message: "File too large. Max size is 2MB.",
+      };
+      return next();
     }
 
     // check error from upload if invalid file type
     if (err.code === "INVALID_FILE_TYPE") {
-      return res.status(415).json({
+      req.uploadError = {
+        status: 415,
         message: "Invalid file type. Only JPEG, PNG, WEBP allowed.",
-      });
+      };
+      return next();
     }
 
     // if fail upload
-    return res.status(400).json({
+    req.uploadError = {
+      status: 400,
       message: "Upload failed.",
-      error: err.message,
-    });
+    };
+    return next();
   });
 };
 

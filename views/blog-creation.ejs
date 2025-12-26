@@ -129,6 +129,19 @@
         .btn-secondary:hover {
             background: #dde2e6;
         }
+        
+        .alert {
+          border-radius: 10px;
+          padding: 10px 12px;
+          font-size: 14px;
+          margin-bottom: 12px;
+        }
+
+        .alert-error {
+          background: #fdecec;
+          border: 1px solid #f5c2c7;
+          color: #842029;
+        }
     </style>
 </head>
 
@@ -140,32 +153,37 @@
         </div>
 
         <div class="card">
+            <% if (error) { %>
+                <div class="alert alert-error">
+                    <%= error %>
+                </div>
+            <% } %>
             <form method="POST" action="/blogs/create" enctype="multipart/form-data">
                 <div class="form-grid">
                     <!-- Blog Title -->
                     <div>
                         <label for="title">Blog Title</label>
-                        <input type="text" id="title" name="title" required placeholder="e.g. My first blog post" />
-                    </div>
-
-                    <!-- Image Upload -->
-                    <div>
-                        <label for="image">Image (optional)</label>
-                        <input type="file" id="image" name="image" accept="image/*" />
-                        <div class="hint">Supported: JPEG, PNG, WEBP only.</div>
-                    </div>
-
-                    <!-- Image Header -->
-                    <div>
-                        <label for="imageHeader">Image Header (optional)</label>
-                        <input type="text" id="imageHeader" name="imageHeader"
-                            placeholder="Short caption for the image" />
+                        <input type="text" id="title" name="title" required placeholder="e.g. My first blog post" value="<%= title || '' %>" />
                     </div>
 
                     <!-- Blog Content -->
                     <div>
                         <label for="content">Post</label>
-                        <textarea id="content" name="content" required placeholder="Write your post here..."></textarea>
+                        <textarea id="content" name="content" required placeholder="Write your post here..."><%= content || '' %></textarea>
+                    </div>
+                    
+                    <!-- Image Header -->
+                    <div>
+                        <label for="imageHeader">Image Header (optional)</label>
+                        <input type="text" id="imageHeader" name="imageHeader"
+                        placeholder="Short caption for the image" value="<%= imageHeader || '' %>"/>
+                    </div>
+                    
+                    <!-- Image Upload -->
+                    <div>
+                        <label for="image">Image (optional)</label>
+                        <input type="file" id="image" name="image" accept="image/*" />
+                        <div class="hint">Images only. (JPEG/PNG/WEBP recommended)</div>
                     </div>
 
                     <div class="actions">

@@ -227,6 +227,19 @@
         .next-form {
             align-self: flex-end;
         }
+
+        .alert {
+          border-radius: 10px;
+          padding: 10px 12px;
+          font-size: 14px;
+          margin-bottom: 12px;
+        }
+
+        .alert-error {
+          background: #fdecec;
+          border: 1px solid #f5c2c7;
+          color: #842029;
+        }
     </style>
 </head>
 
@@ -249,6 +262,11 @@
 
         <% if (blog) { %>
             <div class="card">
+                <% if (typeof error !=="undefined" && error) { %>
+                    <div class="alert alert-error">
+                        <%= error %>
+                    </div>
+                <% } %>
                 <article>
                     <h2 class="blog-title">
                         <%= blog.title %>
