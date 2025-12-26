@@ -41,13 +41,10 @@
             <% } else { %>
                 <p>No comments yet.</p>
             <% } %>        
-        <form method="POST" action="/like">
-            <input type="hidden" name="blogId" value="<%= blog.id %>" />
+        <form method="POST" action="/blogs/<%= blog.id %>/like">
             <button type="submit">Like</button>
         </form>
-        <form method="POST" action="/comment">
-            <input type="hidden" name="blogId" value="<%= blog.id %>" />
-        
+        <form method="POST" action="/blogs/<%= blog.id %>/comment">        
             <textarea name="commentText" rows="3" required></textarea>
             <br />
             <button type="submit">Post Comment</button>
@@ -57,13 +54,13 @@
         <p>No blog posts available.</p>
     <% } %>
         <hr />
-        <form method="POST" action="/next">
+        <form method="POST" action="/blogs/next">
             <button type="submit">Next</button>
         </form>
-        <form method="GET" action="/blog/create">
+        <form method="GET" action="/blogs/create">
             <button type="submit">Create Blog</button>
         </form>
-        <form method="POST" action="/logout">
+        <form method="POST" action="/auth/logout">
             <button type="submit">Logout</button>
         </form>
 </body>

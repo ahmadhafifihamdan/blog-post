@@ -40,7 +40,7 @@ const createBlogHandler = async (req, res) => {
         return res.status(500).json({ message: "Blog creation fail. Try again." });
     }
 
-    return res.cookie("current_blog_id", newBlogId).redirect("/main");
+    return res.cookie("current_blog_id", newBlogId).redirect("/blogs");
 }
 
 

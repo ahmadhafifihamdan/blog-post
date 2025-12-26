@@ -19,7 +19,7 @@ const mainPage = async(req, res) => {
 
     comments = await getCommentsByIds(commentIds);
 
-    res.render("main", { blog, comments });
+    res.render("blogs", { blog, comments });
 }
 
 const nextBlog = async(req, res) => {
@@ -33,7 +33,7 @@ const nextBlog = async(req, res) => {
     if (blog) {
         res.cookie("current_blog_id", blog.id)
     }
-    return res.redirect("/main");
+    return res.redirect("/blogs");
 }
 
 module.exports = {

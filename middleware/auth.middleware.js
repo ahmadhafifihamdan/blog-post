@@ -13,7 +13,7 @@ const protect =  async (req, res, next) => {
         if (!token) {
             // redirect to login if no token
             clearAuthCookies(res);
-            return res.redirect("/login");
+            return res.redirect("/auth/login");
         }
         
         // verify token
@@ -25,7 +25,7 @@ const protect =  async (req, res, next) => {
     } catch (err) {
         // redirect to login if failed to verify token
         clearAuthCookies(res);
-        return res.redirect("/login");
+        return res.redirect("/auth/login");
     }
 }
 
@@ -41,7 +41,7 @@ const redirectIfAuthenticated = (req, res, next) => {
     // Try to verify token
     jwt.verify(token, JWT_AUTH_TOKEN);
         // Token valid → user is authenticated → redirect away from login/signup
-    return res.redirect("/main");
+    return res.redirect("/blogs");
   } catch (err) {
     // Token invalid/expired → clean up and allow access
     clearAuthCookies(res);

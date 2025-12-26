@@ -63,7 +63,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
         await signInWithEmailAndPassword(auth, email, password);
         const authentication_token = jwt.sign({ email }, JWT_AUTH_TOKEN, { expiresIn: "30m" });
         res.cookie("authentication_token", authentication_token, { httpOnly: true });
-        return res.redirect("/main");
+        return res.redirect("/blogs");
     } catch (error) {
         if (
             error.code === "auth/invalid-credential" ||
@@ -83,7 +83,7 @@ const loginUserHandler = asyncHandler(async (req, res) => {
 
 const logoutHandler = (req, res) => {
     clearAuthCookies(res);
-    return res.redirect("/login");
+    return res.redirect("/auth/login");
 }
 
 module.exports = { 
