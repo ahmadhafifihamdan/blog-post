@@ -1,5 +1,5 @@
 const { db } = require("../config/firebase");
-const { collection, query, orderBy, limit, getDocs, doc, getDoc, startAfter } = require("firebase/firestore");
+const { collection, query, orderBy, limit, getDocs, doc, getDoc, startAfter, addDoc, serverTimestamp } = require("firebase/firestore");
 
 // Helper function to normalize blog
 function normalizeBlog(DocumentSnapshot) {
@@ -49,8 +49,20 @@ const getNextBlog = async (blogId) =>{
     return normalizeBlog(docSnap);
 }
 
+const createNewBlog = async(blogContent, imageUrl) => {
+    const col = collection(db, "blogs");
+    const ref = await addDoc(col, { 
+        ...blogContent,
+        imageUrl,
+        createdAt: serverTimestamp()
+    });
+
+    return ref.id;
+}
+
 module.exports = {
     getLatestBlog,
     getBlogById,
-    getNextBlog
+    getNextBlog,
+    createNewBlog
 }
