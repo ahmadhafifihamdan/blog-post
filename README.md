@@ -6,18 +6,17 @@ This project was completed as part of the MyMahir TalentLabs – Backend Develop
 
 ---
 
-## Highlights
+## ✨ Highlights
 
 - Secure authentication using Firebase Auth with JWT stored in HTTP-only cookies
 - Full blog workflow: create, read, like, and comment
 - Optional image uploads with validation using Firebase Storage
 - Deterministic blog navigation with wrap-around awareness
-- Server-rendered UI using EJS (no frontend framework)
 - Defensive coding with graceful empty-state handling
 
 ---
 
-## Tech Stack
+## 🛠 Tech Stack
 
 Backend
 - Node.js
@@ -38,7 +37,7 @@ Middleware / Libraries
 
 ---
 
-## Architecture Overview
+## 🧱 Architecture Overview
 
 The application follows a clear separation of concerns:
 
@@ -52,7 +51,7 @@ This structure keeps the codebase maintainable, testable, and easy to reason abo
 
 ---
 
-## Authentication and Authorization
+## 🔐 Authentication and Authorization
 
 - Users can sign up and log in using Firebase Authentication
 - On successful login, a JWT is issued and stored in an HTTP-only cookie
@@ -63,7 +62,7 @@ Authentication errors are handled gracefully and rendered inline rather than ret
 
 ---
 
-## Blog Feed and Navigation
+## 📰 Blog Feed and Navigation
 
 - The main feed renders one blog post at a time
 - Navigation is deterministic rather than random
@@ -76,7 +75,7 @@ Empty database states are handled safely without crashes.
 
 ---
 
-## Blog Creation
+## ✍️ Blog Creation
 
 - Blog creation is protected by authentication
 - Required fields: title and content
@@ -86,7 +85,7 @@ Empty database states are handled safely without crashes.
 
 ---
 
-## Image Upload Handling
+## 🖼️ Image Upload Handling
 
 - Image uploads are handled via multer using memory storage
 - Validation rules enforced:
@@ -97,7 +96,7 @@ Empty database states are handled safely without crashes.
 
 ---
 
-## Likes
+## ❤️ Likes
 
 - Like and Unlike are supported via a single toggle action
 - Deterministic like IDs prevent duplicate likes
@@ -106,7 +105,7 @@ Empty database states are handled safely without crashes.
 
 ---
 
-## Comments
+## 💬 Comments
 
 - Comments are stored in Firestore and linked to blogs
 - Displayed in descending chronological order
@@ -115,7 +114,7 @@ Empty database states are handled safely without crashes.
 
 ---
 
-## Error Handling and Validation
+## ⚠️ Error Handling and Validation
 
 - Centralized error-handling strategy
 - The application does not crash on empty databases, invalid URLs, or expired cookies
@@ -126,13 +125,31 @@ Server-side validation is enforced throughout the application, while client-side
 
 ---
 
-## Project Focus
+## 🧪 Test Account
+
+A test account is provided for reviewers and evaluators.
+
+Credentials are available in:
+
+firebase_login.txt
+
+This account can be used to exercise the full application:
+- Log in
+- Create blogs
+- Upload images
+- Like and unlike posts
+- Add comments
+- Navigate the feed
+
+---
+
+## 🎯 Project Focus
 
 This project emphasizes backend correctness over frontend complexity, clear request-to-response flow, defensive coding, and real-world UX considerations. It intentionally avoids over-engineering by not using client-side frameworks or unnecessary abstractions.
 
 ---
 
-## Status
+## ✅ Status
 
 - Authentication implemented
 - Blogging functionality complete
