@@ -2,7 +2,7 @@ const { createNewBlog } = require("../services/blog.service");
 const { uploadBlogImageToStorage } = require("../services/storage.service");
 
 const getBlogForm = (req, res) => {
-    return res.render("blog-creation", { error: "", title: "", content: "", imageHeader: "" });
+    return res.render("blog-creation", { error: "", title: "", content: "", imageHeader: "", user: req.user });
 }
 
 const createBlogHandler = async (req, res) => {
