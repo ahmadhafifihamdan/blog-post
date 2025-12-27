@@ -19,6 +19,13 @@ app.get("/", (req, res) => {
 
 app.use("/", router);
 
+app.use((req, res) => {
+    const isLoggedIn = Boolean(req.cookies?.authentication_token);
+
+    return res.status(404).render("404", { isLoggedIn });
+});
+
+
 app.listen(PORT, () => {
     console.log(`Server listening on port ${PORT}`);
 })
