@@ -125,24 +125,6 @@ Server-side validation is enforced throughout the application, while client-side
 
 ---
 
-## 🧪 Test Account
-
-A test account is provided for reviewers and evaluators.
-
-Credentials are available in:
-
-firebase_login.txt
-
-This account can be used to exercise the full application:
-- Log in
-- Create blogs
-- Upload images
-- Like and unlike posts
-- Add comments
-- Navigate the feed
-
----
-
 ## 🎯 Project Focus
 
 This project emphasizes backend correctness over frontend complexity, clear request-to-response flow, defensive coding, and real-world UX considerations. It intentionally avoids over-engineering by not using client-side frameworks or unnecessary abstractions.
