@@ -6,7 +6,10 @@ const { JWT_AUTH_TOKEN } = require("../config/env.config");
 const { clearAuthCookies } = require("../middleware/auth.middleware");
 
 const signUpPage = (req, res) => {
-    res.render("auth/signup");
+    res.render("auth/signup", {
+        error: "",
+        email: ""
+    });
 }
 
 const loginPage = (req, res) => {
@@ -23,7 +26,10 @@ const registerUserHandler = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).render("auth/signup", { error: "Email and password are required.", email });
+        return res.status(400).render("auth/signup", {
+            error: "Email and password are required.",
+            email
+        });
     }
 
     try {
@@ -32,22 +38,28 @@ const registerUserHandler = asyncHandler(async (req, res) => {
         return res.redirect("/auth/login?registered=1");
 
     } catch (error) {
-        // Any auth-related failure
+        let message = "Unable to create account. Please check your details.";
+
+        if (error.code === "auth/email-already-in-use") {
+            message = "Email already registered. Please log in.";
+        }
+
         if (error.code && error.code.startsWith("auth/")) {
-            return res.status(400).render("auth/login", {
-                error: "Invalid email or password.",
+            return res.status(400).render("auth/signup", {
+                error: message,
                 email
             });
         }
 
         // Unexpected error
-        console.error("Login error:", error);
-        return res.status(500).render("auth/login", {
+        console.error("Signup error:", error);
+        return res.status(500).render("auth/signup", {
             error: "Something went wrong. Please try again.",
             email
         });
     }
 });
+
 
 const loginUserHandler = asyncHandler(async (req, res) => {
     const { email, password } = req.body;
