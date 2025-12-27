@@ -25,6 +25,13 @@ const toggleLike = async(blogId, userEmail) => {
     }
 }
 
+const hasUserLiked = async (blogId, userEmail) => {
+    const likeId = `${blogId}_${userEmail}`;
+    const snap = await getDoc(doc(db, "likes", likeId));
+    return snap.exists();
+};
+
 module.exports = {
-    toggleLike
+    toggleLike,
+    hasUserLiked 
 }

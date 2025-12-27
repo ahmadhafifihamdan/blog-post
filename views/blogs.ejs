@@ -78,6 +78,16 @@
             background: #c82333;
         }
 
+        .btn-liked {
+            background: #e7f1ff;
+            color: #0d6efd;
+            border: 1px solid #cfe2ff;
+        }
+
+        .btn-liked:hover {
+            background: #dbe9ff;
+        }
+
         .card {
             background: #fff;
             border-radius: 12px;
@@ -240,6 +250,17 @@
           border: 1px solid #f5c2c7;
           color: #842029;
         }
+
+        .alert-info {
+          background: #eef6ff;
+          border: 1px solid #cfe2ff;
+          color: #084298;
+        }
+
+        .user-info {
+            font-size: 13px;
+            color: #555;
+        }
     </style>
 </head>
 
@@ -248,6 +269,13 @@
 
         <div class="topbar">
             <h1>Main Page</h1>
+            <% if (user && user.email) { %>
+                <div class="user-info">
+                    Logged in as <strong>
+                        <%= user.email %>
+                    </strong>
+                </div>
+            <% } %>
 
             <div class="topbar-actions">
                 <form method="GET" action="/blogs/create">
@@ -265,6 +293,11 @@
                 <% if (typeof error !=="undefined" && error) { %>
                     <div class="alert alert-error">
                         <%= error %>
+                    </div>
+                <% } %>
+                <% if (notice) { %>
+                    <div class="alert alert-info">
+                        <%= notice %>
                     </div>
                 <% } %>
                 <article>
@@ -297,7 +330,9 @@
                                     </div>
 
                                     <form method="POST" action="/blogs/<%= blog.id %>/like">
-                                        <button class="btn btn-secondary" type="submit">Like</button>
+                                        <button class="btn <%= hasLiked ? 'btn-liked' : 'btn-secondary' %>" type="submit">
+                                            <%= hasLiked ? "Unlike" : "Like" %>
+                                        </button>
                                     </form>
                                 </div>
 
