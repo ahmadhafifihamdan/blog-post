@@ -4,6 +4,11 @@ const { redirectIfAuthenticated } = require("../middleware/auth.middleware");
 
 const router = Router();
 
+// Handle root auth
+router.get("/", (req, res) => {
+  return res.redirect("/auth/login");
+});
+
 router.route("/signup")
     .get(redirectIfAuthenticated, signUpPage)
     .post(registerUserHandler);
