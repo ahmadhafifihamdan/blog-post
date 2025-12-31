@@ -144,6 +144,10 @@ This project emphasizes backend correctness over frontend complexity, clear requ
 This repository showcases practical backend engineering skills using ExpressJS and Firebase, with an emphasis on reliability, clarity, and maintainable design.
 
 ---
+<img width="937" height="991" alt="image" src="https://github.com/user-attachments/assets/9bbc2d1c-55ba-4259-bb27-9ce806661a92" />
+
+<img width="825" height="693" alt="image" src="https://github.com/user-attachments/assets/a3d7ae16-60eb-480e-a485-8070fb78c706" />
+
 
 ## Scope Boundaries (Out of Scope)
 
